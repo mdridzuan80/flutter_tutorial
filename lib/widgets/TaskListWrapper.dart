@@ -1,37 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tutorial01/models/task.model.dart';
-import 'TaskListState.dart';
+import 'package:tutorial01/providers/TaskListProvider.dart';
 
 class TaskListWrapper extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
+    final taskList = Provider.of<TaskListProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Awesome List App'),
       ),
-      body: Builder(
-        builder: (BuildContext context) {
-          var taskListState = TaskListState.of(context);
-
-          return ListView(
-            children: List.generate(
-              taskListState!.tasks.length,
-                  (index) => TaskContainer(taskListState.tasks[index], index),
-            ),
-          );
-        },
+      body: ListView(
+        children: List.generate(
+          taskList.tasks.length,
+          (index) => TaskContainer(taskList.tasks[index], index),
+        ),
       ),
       floatingActionButton: Builder(
-        builder: (BuildContext context){
-          var taskListState = TaskListState.of(context);
-
+        builder: (BuildContext context) {
           return FloatingActionButton(
             child: Icon(
               Icons.add,
             ),
             onPressed: () {
-              taskListState!.addTask();
+              taskList.addTask();
             },
           );
         },
@@ -48,7 +42,8 @@ class TaskContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var taskListState = TaskListState.of(context);
+    var tasks = Provider.of<TaskListProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -85,16 +80,11 @@ class TaskContainer extends StatelessWidget {
               ),
               IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: () {
-                  taskListState!.setIndex(index);
-                  taskListState.editNameTask(index,'Item');
-                },
+                onPressed: () => tasks.editNameTask(index, 'Item'),
               ),
               IconButton(
                 icon: Icon(Icons.delete),
-                onPressed: () {
-                  taskListState!.deleteTask(index);
-                },
+                onPressed: () => tasks.deleteTask(index),
               ),
             ],
           ),

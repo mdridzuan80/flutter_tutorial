@@ -1,9 +1,3 @@
-List<Task> tasks = [
-  Task('1','Task 1', 'Task 1 Description'),
-  Task('2','Task 2','Task 2 Description'),
-  Task('3','Task 3','Task 3 Description'),
-];
-
 class Task
 {
   String id;
